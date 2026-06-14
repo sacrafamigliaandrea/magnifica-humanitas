@@ -426,6 +426,28 @@ footer .rights{font-family:'Lexend',sans-serif;font-style:italic}
 .scroll .blk.isquote{border-left-color:var(--oro)}
 .scroll .blk.isquote p{font-family:'Lexend',sans-serif;font-style:italic;font-size:18.5px;color:var(--blu-prof);line-height:1.4}
 .scroll .blk.isquote.read{border-left-color:var(--verde)}
+
+/* ---------- CONSEGNA / DALL'IDEA ALL'AZIONE ---------- */
+.task{margin-top:28px;background:var(--carta);border:1px solid var(--blu-bordo);border-radius:var(--raggio);box-shadow:var(--ombra);padding:26px 30px;position:relative;overflow:hidden}
+.task::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--oro)}
+.task-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:13px}
+.task-ico{flex:0 0 auto;width:44px;height:44px;border-radius:12px;background:var(--blu-tenue);border:1px solid var(--blu-bordo);display:flex;align-items:center;justify-content:center;color:var(--blu)}
+.task-eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--oro);font-weight:700;margin:3px 0 4px}
+.task-title{font-family:'Lexend',sans-serif;font-weight:600;font-size:21px;color:var(--blu-prof);margin:0;line-height:1.2}
+.task-intro{font-size:15.5px;margin:0 0 16px;max-width:78ch}
+.task-ex-label{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blu);margin:0 0 9px}
+.task-ex{list-style:none;padding:0;margin:0 0 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
+.task-ex li{background:var(--blu-tenue);border:1px solid var(--blu-bordo);border-radius:10px;padding:11px 14px 11px 36px;font-size:14.5px;line-height:1.45;position:relative}
+.task-ex li::before{content:"";position:absolute;left:14px;top:16px;width:9px;height:9px;border-radius:3px;background:var(--blu)}
+.task-field-label{display:block;font-size:14px;font-weight:700;color:var(--blu-prof);margin:0 0 8px}
+.task-foot{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:14px}
+.task-check{display:inline-flex;align-items:center;gap:9px;font-size:14px;cursor:pointer;color:var(--inchiostro);position:relative}
+.task-check input{position:absolute;opacity:0;width:1px;height:1px}
+.task-check .box{width:22px;height:22px;border-radius:6px;border:2px solid var(--blu-bordo);background:#fff;display:flex;align-items:center;justify-content:center;color:#fff;transition:.15s}
+.task-check .box svg{width:13px;height:13px;opacity:0;transition:.15s}
+.task-check input:checked + .box{background:var(--verde);border-color:var(--verde)}
+.task-check input:checked + .box svg{opacity:1}
+.task-check input:focus-visible + .box{outline:3px solid var(--oro);outline-offset:2px}
 </style>
 </head>
 <body>
@@ -707,6 +729,97 @@ const TAPPE = [
   }
 ];
 
+const CONSEGNE = {
+  t1:{
+    action:"Lavora «alla Neemia» nel prossimo lavoro di gruppo",
+    intro:"Quando lavori in squadra, prova a costruire come Neemia e non come Babele: ascolta, dividi i compiti, valorizza tutti.",
+    examples:[
+      "Affida a ogni compagno un pezzo del lavoro, anche al più timido.",
+      "Prima di decidere chiedi «Voi cosa ne pensate?» e ascolta davvero.",
+      "Se qualcuno è in difficoltà, dagli una mano invece di fare tutto tu."
+    ],
+    prompt:"Scrivi UNA cosa «da Neemia» che proverai a fare nel prossimo lavoro di gruppo.",
+    placeholder:"Nel prossimo lavoro di gruppo io…"
+  },
+  t2:{
+    action:"Smaschera le scelte nascoste in un'app che usi",
+    intro:"Scegli un'app, un sito o un gioco che usi spesso e indaga: nessuno strumento è davvero «neutro».",
+    examples:[
+      "A chi serve? A te, o a chi guadagna con la tua attenzione?",
+      "Cosa premia? Certi social mettono in alto i video che fanno arrabbiare.",
+      "Com'è «gratis»? Spesso paghi con i tuoi dati o con la pubblicità."
+    ],
+    prompt:"Scegli un'app e scrivi una scelta «nascosta» che hai scoperto dietro di essa.",
+    placeholder:"L'app … in realtà…"
+  },
+  t3:{
+    action:"Metti alla prova l'IA con una domanda «da umani»",
+    intro:"Fai all'IA una domanda che richiede corpo, esperienza o emozioni vere, e osserva che cosa le manca.",
+    examples:[
+      "«Che sapore ha la neve in bocca?» — la descrive, ma non l'ha mai assaggiata.",
+      "«Qual è la tua paura più grande?» — la inventa, ma non l'ha mai provata.",
+      "«Com'era il tuo primo giorno di scuola?» — lei non ha un primo giorno."
+    ],
+    prompt:"Scrivi una risposta dell'IA che sembrava vera ma che lei non poteva davvero «sapere».",
+    placeholder:"Le ho chiesto… e ha risposto…"
+  },
+  t4:{
+    action:"Usa l'IA con la «regola dei tre passi»",
+    intro:"La prossima volta che usi l'IA per un compito, non delegare tutto: prima provo, poi chiedo, poi controllo.",
+    examples:[
+      "1) Provo da solo a iniziare o a rispondere.",
+      "2) Chiedo aiuto all'IA solo dove sono bloccato.",
+      "3) Controllo se è vero su un'altra fonte e riscrivo con parole mie."
+    ],
+    prompt:"Per un compito recente, scrivi cosa hai fatto TU e in che cosa ti ha aiutato l'IA.",
+    placeholder:"Ho fatto io… l'IA mi ha aiutato a…"
+  },
+  t5:{
+    action:"Fai un «digiuno dall'IA» questa settimana",
+    intro:"Scegli un compito da svolgere senza nessun aiuto digitale: scoprirai che cosa sai fare da solo.",
+    examples:[
+      "Scrivi un tema a mano, dall'inizio alla fine.",
+      "Risolvi i problemi di matematica senza cercare la soluzione online.",
+      "Leggi un capitolo senza farti fare il riassunto automatico."
+    ],
+    prompt:"Quale compito farai senza IA? Dopo, scrivi com'è andata: più difficile? più tuo?",
+    placeholder:"Farò senza IA… ed è andata…"
+  },
+  t6:{
+    action:"Fai un mini fact-check prima di condividere",
+    intro:"Prima di girare una notizia o un'immagine, fermati trenta secondi e verifica.",
+    examples:[
+      "Chi l'ha pubblicata? Cerca il nome del sito o della fonte.",
+      "Quando? Una foto «di oggi» a volte è di anni fa.",
+      "Lo dicono anche fonti affidabili? Cerca la stessa notizia altrove."
+    ],
+    prompt:"Porta una notizia o un'immagine «sospetta» e scrivi come hai capito se era vera o falsa.",
+    placeholder:"Ho controllato… e ho scoperto che…"
+  },
+  t7:{
+    action:"«Disarma» le tue parole per un giorno",
+    intro:"Per una giornata fai attenzione a come parli e scrivi: trasforma le frasi aggressive in frasi rispettose.",
+    examples:[
+      "«Sei un disastro» → «Questa parte non è venuta, riproviamo insieme».",
+      "In chat, prima di inviare rileggi: lo direi anche guardandolo in faccia?",
+      "Quando sei arrabbiato, aspetta un minuto prima di rispondere."
+    ],
+    prompt:"Scrivi 2 frasi «armate» che senti spesso e la loro versione «disarmata».",
+    placeholder:"Armata: … → Disarmata: …"
+  },
+  t8:{
+    action:"Fai UN gesto concreto nel tuo «campo che conosci»",
+    intro:"Scegli il tuo piccolo campo d'azione e fai questa settimana un gesto di cura o di pace, anche piccolo.",
+    examples:[
+      "Aiuta un compagno in difficoltà con un'app o con un compito.",
+      "Insegna a un nonno o a un genitore a usare qualcosa sul telefono.",
+      "Vedi un contenuto che ferisce qualcuno? Non condividerlo: parlane con un adulto."
+    ],
+    prompt:"Scrivi il gesto che farai questa settimana. Poi torna qui e racconta com'è andato.",
+    placeholder:"Questa settimana io…"
+  }
+};
+
 /* ============================================================
    STATO + localStorage (per nick, app autonoma)
    ============================================================ */
@@ -718,7 +831,7 @@ function loadState(){
   catch(e){ STATE = {}; }
 }
 function saveState(){ localStorage.setItem(storeKey(), JSON.stringify(STATE)); }
-function ensure(id){ if(!STATE[id]) STATE[id] = {done:false, answers:null, monitor:"", scale:0, reflection:"", read:null}; return STATE[id]; }
+function ensure(id){ if(!STATE[id]) STATE[id] = {done:false, answers:null, monitor:"", scale:0, reflection:"", read:null, task:"", taskDone:false}; return STATE[id]; }
 
 /* ============================================================
    ICONE SVG
@@ -730,6 +843,7 @@ const ICO = {
   next:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
   prev:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>',
   pen:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
+  target:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>',
   eye:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>',
   brain:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 0V5a3 3 0 0 0-3-2z"/><path d="M15 3a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 0"/></svg>'
 };
@@ -885,6 +999,7 @@ function renderTappa(t){
       </article>
       <section class="work" id="workZone"></section>
     </div>
+    <section id="taskZone"></section>
     <div class="pagenav" id="pagenav"></div>
   `;
 
@@ -908,6 +1023,7 @@ function renderTappa(t){
   pn.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.go)));
 
   setupReading(page, t, st);
+  buildTask(page.querySelector("#taskZone"), t, st);
   return page;
 }
 
@@ -961,6 +1077,43 @@ function setupReading(page, t, st){
     b.addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); mark(i); } });
   });
   refresh();
+}
+
+/* ============================================================
+   CONSEGNA: dall'idea all'azione (con esempi)
+   ============================================================ */
+function buildTask(zone, t, st){
+  const c = CONSEGNE[t.id];
+  if(!c){ return; }
+  const fid = "taskF-"+t.id;
+  zone.innerHTML = `
+    <section class="task">
+      <div class="task-head">
+        <span class="task-ico" aria-hidden="true">${ICO.target}</span>
+        <div>
+          <p class="task-eyebrow">Consegna &middot; Dall'idea all'azione</p>
+          <h3 class="task-title">${c.action}</h3>
+        </div>
+      </div>
+      <p class="task-intro">${c.intro}</p>
+      <p class="task-ex-label">Per esempio</p>
+      <ul class="task-ex">${c.examples.map(e=>`<li>${e}</li>`).join("")}</ul>
+      <label class="task-field-label" for="${fid}">${c.prompt}</label>
+      <textarea class="open-field" id="${fid}" placeholder="${escapeHtml(c.placeholder||'')}">${escapeHtml(st.task||'')}</textarea>
+      <div class="task-foot">
+        <button class="btn btn-gold" id="taskSave">${ICO.pen} Salva l'impegno</button>
+        <label class="task-check"><input type="checkbox" id="taskDone" ${st.taskDone?'checked':''}><span class="box" aria-hidden="true">${ICO.check}</span> L'ho messo in pratica</label>
+      </div>
+      <div class="feedback" id="taskFb"></div>
+    </section>`;
+  const fb = zone.querySelector("#taskFb");
+  zone.querySelector("#taskSave").addEventListener("click",()=>{
+    st.task = zone.querySelector("#"+fid).value.trim(); saveState();
+    if(st.task.length<3){ fb.className="feedback saved show"; fb.innerHTML="Scrivi il tuo impegno in una frase, poi salva."; return; }
+    fb.className="feedback good show";
+    fb.innerHTML="<strong>Impegno salvato.</strong> Ora prova davvero: è qui che l'idea diventa azione.";
+  });
+  zone.querySelector("#taskDone").addEventListener("change",(e)=>{ st.taskDone=e.target.checked; saveState(); });
 }
 
 /* ============================================================
