@@ -75,21 +75,18 @@ nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:6px}
 .tab:hover{color:#fff;background:rgba(255,255,255,.10)}
 .tab[aria-current="true"]{color:var(--blu-prof);background:#fff;border-color:var(--oro);box-shadow:0 2px 10px rgba(0,0,0,.18)}
 .tab[aria-current="true"] .tnum{color:#fff;background:var(--blu)}
-.tab[aria-current="true"] .tdot{border-color:var(--blu)}
+.tab[aria-current="true"] .tcheck:not(.done){border-color:#9AA8CC}
 .tab .tnum{flex:0 0 auto;font-size:11px;font-weight:700;color:var(--blu-prof);background:#C7D3EF;border-radius:6px;min-width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;padding:0 5px}
-.tab .tdot{margin-left:auto;width:8px;height:8px;border-radius:3px;border:1.5px solid #6E83B8;flex:0 0 auto}
-.tab .tdot.done{background:var(--oro);border-color:var(--oro)}
-/* muro verticale (sale dal basso) */
-.sb-foot{flex:0 0 auto;border-top:1px solid rgba(255,255,255,.10);padding:14px 16px 12px}
-.wall-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:9px}
-.wall-label{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:#8FA2CE}
-.wall-count{font-size:12.5px;color:#C9D5F0;font-weight:700}
-.bricks{display:flex;flex-direction:column-reverse;gap:4px;margin-bottom:14px}
-.brick{height:11px;border-radius:3px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);transition:background .35s,box-shadow .35s}
-.brick.laid{background:linear-gradient(90deg,#D9C28A,#B0791E);border-color:#8A5E12;box-shadow:0 1px 0 rgba(255,255,255,.25) inset}
+.tab .tlabel{flex:1;line-height:1.2}
+.tab .tcheck{margin-left:auto;flex:0 0 auto;width:20px;height:20px;border-radius:50%;border:1.5px solid #6E83B8;display:flex;align-items:center;justify-content:center;color:#fff}
+.tab .tcheck svg{width:11px;height:11px;opacity:0;transition:opacity .15s}
+.tab .tcheck.done{background:var(--verde);border-color:var(--verde)}
+.tab .tcheck.done svg{opacity:1}
+.sb-foot{flex:0 0 auto;border-top:1px solid rgba(255,255,255,.10);padding:14px 16px}
+/* mini-muro orizzontale (solo Home) */
 .bricks-row{display:flex;gap:4px;height:16px;margin-bottom:6px}
-.bricks-row .brick{flex:1;height:auto;border-radius:3px}
-.bricks-row .brick.laid{background:linear-gradient(180deg,#D9C28A,#B0791E)}
+.bricks-row .brick{flex:1;border-radius:3px;background:#E1E6F1;border:1px solid var(--blu-bordo);transition:background .35s}
+.bricks-row .brick.laid{background:linear-gradient(90deg,#D9C28A,#B0791E);border-color:#8A5E12}
 .nick-chip{
   width:100%;justify-content:center;font-family:inherit;
   font-size:13px;color:#C9D5F0;display:flex;align-items:center;gap:7px;
@@ -462,11 +459,6 @@ footer .rights{font-family:'Lexend',sans-serif;font-style:italic}
   </div>
   <nav id="nav" aria-label="Tappe della lezione"></nav>
   <div class="sb-foot">
-    <div class="wall-head">
-      <span class="wall-label">Il muro che costruiamo</span>
-      <span class="wall-count" id="wallCount">0/8</span>
-    </div>
-    <div class="bricks" id="bricks" aria-hidden="true"></div>
     <button class="nick-chip" id="nickChip" title="Cambia nome o azzera i progressi">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
       <span id="nickName">Ospite</span>
@@ -855,12 +847,12 @@ const ICO = {
 let CURRENT = "home";
 function renderNav(){
   const nav = document.getElementById("nav");
-  let h = `<button class="tab" data-go="home"><span class="tnum" aria-hidden="true">★</span>Home</button>`;
+  let h = `<button class="tab" data-go="home"><span class="tnum" aria-hidden="true">★</span><span class="tlabel">Home</span></button>`;
   TAPPE.forEach(t=>{
     const done = STATE[t.id] && STATE[t.id].done;
     h += `<button class="tab" data-go="${t.id}">
-      <span class="tnum">${t.n}</span>${t.titolo}
-      <span class="tdot ${done?'done':''}" aria-hidden="true"></span>
+      <span class="tnum">${t.n}</span><span class="tlabel">${t.titolo}</span>
+      <span class="tcheck ${done?'done':''}" aria-hidden="true">${ICO.check}</span>
     </button>`;
   });
   nav.innerHTML = h;
@@ -870,11 +862,9 @@ function renderNav(){
 function updateNavState(){
   document.querySelectorAll("#nav .tab").forEach(b=>{
     b.setAttribute("aria-current", b.dataset.go===CURRENT ? "true":"false");
+    const chk = b.querySelector(".tcheck");
+    if(chk){ chk.classList.toggle("done", !!(STATE[b.dataset.go] && STATE[b.dataset.go].done)); }
   });
-  const done = TAPPE.filter(t=>STATE[t.id]&&STATE[t.id].done).length;
-  const bricks = document.getElementById("bricks");
-  bricks.innerHTML = TAPPE.map(t=>`<span class="brick ${STATE[t.id]&&STATE[t.id].done?'laid':''}"></span>`).join("");
-  document.getElementById("wallCount").textContent = done+"/8";
 }
 
 /* ============================================================
